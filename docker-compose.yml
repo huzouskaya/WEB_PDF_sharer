@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend  # Путь к вашему проекту Django
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend/presentation-app  # Путь к вашему проекту Vue.js
+    ports:
+      - "80:80"
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: your_db_name
+      POSTGRES_USER: your_db_user
+      POSTGRES_PASSWORD: your_db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
